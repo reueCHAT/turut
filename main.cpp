@@ -6,7 +6,7 @@ using namespace std;
 
 /* run this program using the console pauser or add your own getch, system("pause") or input loop */
 
-class User { //РєР»Р°СЃСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+class User { //класс пользователя
 
 	public:
 		string user_name = "";
@@ -30,7 +30,7 @@ class User { //РєР»Р°СЃСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 		}
 };
 
-int letterSizeCheck(string letter){ //РїСЂРѕРІРµСЂРєР° СЂР°Р·РјРµСЂР° СЃР»РѕРІР°
+int letterSizeCheck(string letter){ //проверка размера слова
 	int name_length=0;
 	for (int y=0; letter[y]!='\0'; y++){
 			name_length++;
@@ -38,13 +38,13 @@ int letterSizeCheck(string letter){ //РїСЂРѕРІРµСЂРєР° СЂР°Р·РјРµСЂР° СЃР»РѕРІР°
 	return name_length;
 }
 
-void printLetter(char letter,int letter_num,int letter_size){ //СѓРјРЅС‹Р№ РІС‹РІРѕРґ СЃРёРјРІРѕР»РѕРІ
+void printLetter(char letter,int letter_num,int letter_size){ //умный вывод символов
 	if ((letter!=' ')&&(letter!='\0')&&(letter_num<letter_size)){
 		cout<<letter;
 	} else cout<<" ";
 }
 
-void showGrid(int user_count, int max_name_length, User* user) { //РѕС‚СЂРёСЃРѕРІРєР° С‚СѓСЂРЅРёСЂРЅРѕР№ СЃРµС‚РєРё
+void showGrid(int user_count, int max_name_length, User* user) { //отрисовка турнирной сетки
 	
 	int i=0;
 	int vertical_length=4;
@@ -67,18 +67,18 @@ void showGrid(int user_count, int max_name_length, User* user) { //РѕС‚СЂРёСЃРѕР
 		}
 		
 		for(int y=0;y<length_grid;y++){
-			if(x%2==0) { //Создание горизонтальных отчеркиваний
+			if(x%2==0) { //??? ????uo ????
 				cout<<"-";
-			} else if((x%2!=0)&&((y==0)||(y==max_name_length+1)||(y==max_name_length+mov_length+2)||(y==max_name_length+mov_length+kill_point_length+3))) { //Создание вертикальных отчерков
+			} else if((x%2!=0)&&((y==0)||(y==max_name_length+1)||(y==max_name_length+mov_length+2)||(y==max_name_length+mov_length+kill_point_length+3))) { //??? ????uo ???
 				cout<<"|";
 				letter_count=0;
-			} else if((x%2!=0)&&(y!=0)&&(y<max_name_length+1)) { //вывод ника
+			} else if((x%2!=0)&&(y!=0)&&(y<max_name_length+1)) { //????				
 				printLetter(user[i].user_name[letter_count], letter_count, letterSizeCheck(user[i].user_name));
 				letter_count++;
-			} else if((x%2!=0)&&(y!=0)&&(y>max_name_length+1)&&(y<max_name_length+mov_length+2)) { //вывод мова
+			} else if((x%2!=0)&&(y!=0)&&(y>max_name_length+1)&&(y<max_name_length+mov_length+2)) { //????				
 				printLetter(mov[i][letter_count], letter_count, letterSizeCheck(mov[i]));
 				letter_count++;
-			} else if((x%2!=0)&&(y!=0)&&(y>max_name_length+1)&&(y>max_name_length+mov_length+2)&&(y<<max_name_length+mov_length+kill_point_length+3)) { //вывод кп
+			} else if((x%2!=0)&&(y!=0)&&(y>max_name_length+1)&&(y>max_name_length+mov_length+2)&&(y<<max_name_length+mov_length+kill_point_length+3)) { //???
 				printLetter(kill[i][letter_count], letter_count, letterSizeCheck(kill[i]));
 				letter_count++;
 			}
@@ -90,10 +90,22 @@ void showGrid(int user_count, int max_name_length, User* user) { //РѕС‚СЂРёСЃРѕР
 }
 
 
+
 int participants(User* user,int user_count,int max_name_length=0){
-	for (int x=0; x<user_count; x++){ // Цикл ввода пользователей в массив
-		cout<<"Введите пользователя №"<<x<<"\n";
-		cin>>user[x].user_name;
+	ofstream member_list("member.txt");
+	for (int x=0; x<user_count; x++){
+		if((x==user_count-1)&&(user_count%2==0)) {
+			user[x].user_name="Proksibot";	
+			member_list<<"["<<x<<"] - "<<user[x].user_name<<";";	
+		} else{
+			cout<<"Введите имя участника № "<<x<<"\n"; 
+			cin>>user[x].user_name;
+			member_list<<"["<<x<<"] - "<<user[x].user_name;
+			if(x==user_count-1)
+				member_list<<";";
+			else member_list<<"\n";	
+		}
+		
 		int name_length=0;
 		name_length=letterSizeCheck(user[x].user_name);
 		if(name_length>max_name_length){
@@ -104,22 +116,73 @@ int participants(User* user,int user_count,int max_name_length=0){
 	return max_name_length;
 }
 
+int participants_count(string file_output){
+	int participant_count=1;
+	for(int x=0; file_output[x]!='\0';x++){
+		cout<<file_output<<"\n";
+		if (file_output[x]=='\n'){
+				participant_count++;
+				cout<<"ya tut";
+			}
+	}
+	return participant_count;
+}
+
 
 int main(int argc, char** argv) {
 	setlocale(LC_ALL, "RUS");
+	SetConsoleCP(1251);
+  	SetConsoleOutputCP(1251);
 	int game_stat=1;
 	
 	while(game_stat!=-1){
-		cout<<"Что вы хотите сделать?\n 1-Создать турнир\n 2-Продолжить вести турнир";
+		cout<<"Что вы хотите сделать?\n 1-Начать турнир\n 2-Продолжить турнир\n";
 		cin>>game_stat;
-			cout<<"Сколько человек пришло на турнир?\n";
+		if (game_stat == 1){
+			cout<<"Введите количество игроков\n";
 			int user_count=0;
 			int max_name_length=0;
 			cin>>user_count;
+			if(user_count%2==1) user_count++;
 			User* user = new User[user_count];
-			
 			max_name_length=participants(user,user_count);
+		
 			showGrid(user_count,max_name_length,user);
-			return 0;
+			
+		} else if(game_stat == 2){
+			
+			int user_count = 0;
+			string file_data=" ";
+			int file_size=0;
+			ifstream file_output("member.txt");
+			
+			do{
+				getline(file_output, file_data);
+				user_count++;
+			}while(file_data[file_data.size()-1]!=';');
+			
+			User* user = new User[user_count+1];
+			user_count=0;
+			file_output.seekg( 0 );             
+			int max_name_length=0;
+			
+			do{
+				int x,size,letter_size=0;
+				getline(file_output, file_data);
+				size=letterSizeCheck(file_data);
+				
+				for(x=6;(x<size)&&(file_data[x]!='\n')&&(file_data[x]!=';');x++){
+					user[user_count].user_name+=file_data[x];
+					letter_size++;
+				}
+				
+				if(letter_size>max_name_length)
+					max_name_length=letter_size;
+				
+				user_count++;
+			}while(file_data[file_data.size()-1]!=';');
+			
+			showGrid(user_count,max_name_length,user);
+		}
 	}
 }

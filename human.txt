@@ -1,6 +1,0 @@
-[0] jjjj
-[1] jjddd
-[0] jjj
-[1] fff
-[2] ggg
-[3] dd
