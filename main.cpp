@@ -12,23 +12,37 @@ class User { //класс пользовател€
 		string user_name = "";
 		float user_mov = 0.0;
 		int user_kp = 1000;
+		int user_wins=0;
 
 		User(){
 			this->user_name = "";
 			this->user_mov = 0.0;
 			this->user_kp = 0;
+			this->user_wins = 0;
 		}
 
-		User(string user_name, float user_mov, int user_kp) {
+		User(string user_name, float user_mov, int user_kp, int user_wins) {
 			this->user_name=user_name;
 			this->user_mov=user_mov;
 			this->user_kp=user_kp;
+			this->user_wins=user_wins;
 		}
 		
 		void printInfo() {
 			cout<<user_name<<" "<<user_mov<<" "<<user_kp;
 		}
 };
+
+class Table{
+	public:
+		int table_id;
+		User* first_player;
+		User* second_player;
+		
+		
+};
+
+
 
 int letterSizeCheck(string letter){ //проверка размера слова
 	int name_length=0;
@@ -50,7 +64,7 @@ void showGrid(int user_count, int max_name_length, User* user) { //отрисовка тур
 	int vertical_length=4;
 	int mov_length=4;
 	int kill_point_length=4;
-	int length_grid=vertical_length+max_name_length+mov_length+kill_point_length;
+	int length_grid=vertical_length+max_name_length+mov_length+kill_point_length+2;
 	int letter_count=0;
 	string mov[user_count];
 	string kill[user_count];
@@ -69,7 +83,7 @@ void showGrid(int user_count, int max_name_length, User* user) { //отрисовка тур
 		for(int y=0;y<length_grid;y++){
 			if(x%2==0) { //??? ????uo ????
 				cout<<"-";
-			} else if((x%2!=0)&&((y==0)||(y==max_name_length+1)||(y==max_name_length+mov_length+2)||(y==max_name_length+mov_length+kill_point_length+3))) { //??? ????uo ???
+			} else if((x%2!=0)&&((y==0)||(y==max_name_length+1)||(y==max_name_length+mov_length+2)||(y==max_name_length+mov_length+kill_point_length+3)||(y==max_name_length+mov_length+kill_point_length+5))) { //??? ????uo ???
 				cout<<"|";
 				letter_count=0;
 			} else if((x%2!=0)&&(y!=0)&&(y<max_name_length+1)) { //????				
@@ -80,6 +94,10 @@ void showGrid(int user_count, int max_name_length, User* user) { //отрисовка тур
 				letter_count++;
 			} else if((x%2!=0)&&(y!=0)&&(y>max_name_length+1)&&(y>max_name_length+mov_length+2)&&(y<<max_name_length+mov_length+kill_point_length+3)) { //???
 				printLetter(kill[i][letter_count], letter_count, letterSizeCheck(kill[i]));
+				letter_count++;
+			}
+			else if((x%2!=0)&&(y!=0)&&(y>max_name_length+1)&&(y>max_name_length+mov_length+2)&&(y<<max_name_length+mov_length+kill_point_length+4)) { //???
+				cout<<user[i].user_wins;
 				letter_count++;
 			}
 		}
@@ -135,10 +153,10 @@ int main(int argc, char** argv) {
   	SetConsoleOutputCP(1251);
 	int game_stat=1;
 	
-	while(game_stat!=-1){
+	while(game_stat!=-1){ //«апуск приложени€
 		cout<<"„то вы хотите сделать?\n 1-Ќачать турнир\n 2-ѕродолжить турнир\n";
 		cin>>game_stat;
-		if (game_stat == 1){
+		if (game_stat == 1){ //—оздание турнира
 			cout<<"¬ведите количество игроков\n";
 			int user_count=0;
 			int max_name_length=0;
@@ -149,7 +167,7 @@ int main(int argc, char** argv) {
 		
 			showGrid(user_count,max_name_length,user);
 			
-		} else if(game_stat == 2){
+		} else if(game_stat == 2){ //продолжение турнира
 			
 			int user_count = 0;
 			string file_data=" ";

@@ -1,6 +1,4 @@
-[0] - debil
-[1] - jopa
-[2] - члн
-[3] - вфыл
-[4] - vanya
-[5] - Proksibot;
+[0] - jopa
+[1] - clhel
+[2] - skd
+[3] - Proksibot;
